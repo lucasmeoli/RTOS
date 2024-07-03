@@ -27,17 +27,15 @@ extern "C" {
 
 /********************** typedef **********************************************/
 
-typedef enum
-{
-  AO_UI_MESSAGE_BUTTON_NONE,
-  AO_UI_MESSAGE_BUTTON_PULSE,
-  AO_UI_MESSAGE_BUTTON_SHORT,
-  AO_UI_MESSAGE_BUTTON_LONG,
-  AO_UI_MESSAGE__N,
+typedef enum {
+    AO_UI_MESSAGE_BUTTON_NONE,
+    AO_UI_MESSAGE_BUTTON_PULSE,
+    AO_UI_MESSAGE_BUTTON_SHORT,
+    AO_UI_MESSAGE_BUTTON_LONG,
+    AO_UI_MESSAGE__N,
 } ao_ui_message_t;
 
-typedef struct
-{
+typedef struct {
     QueueHandle_t hqueue;
 } ao_ui_handle_t;
 

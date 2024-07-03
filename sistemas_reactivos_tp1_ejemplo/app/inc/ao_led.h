@@ -26,16 +26,16 @@ extern "C" {
 
 /********************** typedef **********************************************/
 
-typedef enum
-{
+typedef enum {
   AO_LED_MESSAGE_ON,
   AO_LED_MESSAGE_OFF,
   AO_LED_MESSAGE__N,
 } ao_led_message_t;
 
-typedef struct
-{
+typedef struct {
     QueueHandle_t hqueue;
+    TimerHandle_t htimer;
+    uint16_t time_led_on;
     GPIO_TypeDef* led_port;
     uint16_t led_pin;
 } ao_led_handle_t;

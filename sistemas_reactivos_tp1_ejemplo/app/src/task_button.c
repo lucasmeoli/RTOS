@@ -135,7 +135,6 @@ void task_button(void* argument)
 
       case BUTTON_TYPE_PULSE:
         LOGGER_INFO("button pulse");
-        xSemaphoreGive(hsem_button);
         msg = AO_UI_MESSAGE_BUTTON_PULSE;
         break;
 

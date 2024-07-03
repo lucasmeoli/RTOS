@@ -41,14 +41,11 @@
 #include "board.h"
 
 #include "task_button.h"
-#include "task_led.h"
-#include "task_ui.h"
-
 #include "ao_ui.h"
 #include "ao_led.h"
 
 /********************** macros and definitions *******************************/
-
+#define TIME_LED_ON_MS	1000
 
 /********************** internal data declaration ****************************/
 
@@ -58,58 +55,30 @@
 
 /********************** external data declaration *****************************/
 
-SemaphoreHandle_t hsem_button;
-SemaphoreHandle_t hsem_led;
-
 ao_ui_handle_t hao_ui;
 
-ao_led_handle_t hao_ledR = {NULL, LED_RED_PORT, LED_RED_PIN};
-ao_led_handle_t hao_ledG = {NULL, LED_GREEN_PORT, LED_GREEN_PIN};
-ao_led_handle_t hao_ledB = {NULL, LED_BLUE_PORT, LED_BLUE_PIN};
+ao_led_handle_t hao_ledR = {NULL, NULL, TIME_LED_ON_MS, LED_RED_PORT, LED_RED_PIN};
+ao_led_handle_t hao_ledG = {NULL, NULL, TIME_LED_ON_MS, LED_GREEN_PORT, LED_GREEN_PIN};
+ao_led_handle_t hao_ledB = {NULL, NULL, TIME_LED_ON_MS, LED_BLUE_PORT, LED_BLUE_PIN};
 
 /********************** external functions definition ************************/
-void app_init(void)
-{
-  hsem_button = xSemaphoreCreateBinary();
-  while(NULL == hsem_button)
-  {
+void app_init(void) {
 
-  }
+    ao_ui_init(&hao_ui);
+    ao_led_init(&hao_ledR);
+    ao_led_init(&hao_ledG);
+    ao_led_init(&hao_ledB);
 
-  hsem_led = xSemaphoreCreateBinary();
-  while(NULL == hsem_led)
-  {
+    BaseType_t status;
 
-  }
-
-  ao_ui_init(&hao_ui);
-  ao_led_init(&hao_ledR);
-  ao_led_init(&hao_ledG);
-  ao_led_init(&hao_ledB);
-
-  BaseType_t status;
-
-  status = xTaskCreate(task_button, "task_button", 128, NULL, tskIDLE_PRIORITY, NULL);
-  while (pdPASS != status)
-  {
+    status = xTaskCreate(task_button, "task_button", 128, NULL, tskIDLE_PRIORITY, NULL);
+    while (pdPASS != status) {
     // error
-  }
+    }
 
-//  status = xTaskCreate(task_ui, "task_ui", 128, NULL, tskIDLE_PRIORITY, NULL);
-//  while (pdPASS != status)
-//  {
-//    // error
-//  }
-//
-//  status = xTaskCreate(task_led, "task_led", 128, NULL, tskIDLE_PRIORITY, NULL);
-//  while (pdPASS != status)
-//  {
-//    // error
-//  }
+    LOGGER_INFO("app init");
 
-  LOGGER_INFO("app init");
-
-  cycle_counter_init();
+    cycle_counter_init();
 }
 
 /********************** end of file ******************************************/
